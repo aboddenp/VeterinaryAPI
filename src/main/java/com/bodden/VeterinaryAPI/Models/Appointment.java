@@ -1,5 +1,6 @@
 package com.bodden.VeterinaryAPI.Models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import org.hibernate.Hibernate;
 import org.hibernate.annotations.OnDelete;
@@ -18,19 +19,22 @@ import java.util.Objects;
 @Table(name = "appointments")
 public class Appointment {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private Service service;
 
+    @JsonFormat(pattern="yyyy-MM-dd")
     @Column(nullable = false)
     private LocalDate localDate;
 
+    @JsonFormat(pattern="HH:mm")
     @Column(nullable = false)
     private LocalTime localTime;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "pet_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @ToString.Exclude
