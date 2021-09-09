@@ -2,6 +2,8 @@ package com.bodden.VeterinaryAPI.Models;
 
 import lombok.*;
 import org.hibernate.Hibernate;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -12,7 +14,7 @@ import java.util.Set;
 @Setter
 @ToString
 @RequiredArgsConstructor
-@Table(name = "Pet")
+@Table(name = "pets")
 public class Pet {
     // Fields
     @Id
@@ -22,18 +24,14 @@ public class Pet {
     @Column(nullable = false)
     private String name;
 
-    @OneToOne
-    private Type type;
+    @Column(nullable = false)
+    private String type;
 
-    @OneToMany
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "owner_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @ToString.Exclude
-    private Set<Appointment> appointmentsHistory;
-
-    @ManyToMany(mappedBy = "petsOwned")
-    @ToString.Exclude
-    private Set<User> users;
-
-
+    private Owner owner;
 
     @Override
     public boolean equals(Object o) {
@@ -45,6 +43,6 @@ public class Pet {
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, type);
+        return Objects.hash(name);
     }
 }

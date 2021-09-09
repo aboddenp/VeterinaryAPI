@@ -2,6 +2,8 @@ package com.bodden.VeterinaryAPI.Models;
 
 import lombok.*;
 import org.hibernate.Hibernate;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -13,7 +15,7 @@ import java.util.Objects;
 @Setter
 @ToString
 @RequiredArgsConstructor
-@Table(name = "Appointment")
+@Table(name = "appointments")
 public class Appointment {
     @Id
     @GeneratedValue
@@ -22,19 +24,17 @@ public class Appointment {
     @Column(nullable = false)
     private Service service;
 
-    @Basic
     @Column(nullable = false)
     private LocalDate localDate;
 
-    @Basic
     @Column(nullable = false)
     private LocalTime localTime;
 
-    @OneToOne
-    private Pet petClient;
-
-    @OneToOne
-    private User userClient;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "pet_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @ToString.Exclude
+    private Pet pet;
 
     public enum Service{
         GROOMING(),MEDICAL()
@@ -50,6 +50,6 @@ public class Appointment {
 
     @Override
     public int hashCode() {
-        return Objects.hash(service, localDate, localTime, petClient);
+        return Objects.hash(service, localDate, localTime, pet);
     }
 }
