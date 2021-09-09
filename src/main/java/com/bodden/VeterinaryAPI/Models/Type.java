@@ -3,48 +3,35 @@ package com.bodden.VeterinaryAPI.Models;
 import lombok.*;
 import org.hibernate.Hibernate;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import java.util.Objects;
-import java.util.Set;
 
 @Entity
 @Getter
 @Setter
 @ToString
 @RequiredArgsConstructor
-@Table(name = "Pet")
-public class Pet {
-    // Fields
+public class Type {
     @Id
-    @GeneratedValue()
-    private Long id;
+    @GeneratedValue
+    private long ID;
 
     @Column(nullable = false)
     private String name;
-
-    @OneToOne
-    private Type type;
-
-    @OneToMany
-    @ToString.Exclude
-    private Set<Appointment> appointmentsHistory;
-
-    @ManyToMany(mappedBy = "petsOwned")
-    @ToString.Exclude
-    private Set<User> users;
-
-
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        Pet pet = (Pet) o;
-        return Objects.equals(id, pet.id);
+        Type type = (Type) o;
+        return Objects.equals(ID, type.ID);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, type);
+        return 0;
     }
 }
