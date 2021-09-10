@@ -4,64 +4,53 @@ import com.bodden.VeterinaryAPI.Exceptions.ResourceNotFoundException;
 import com.bodden.VeterinaryAPI.Models.Appointment;
 import com.bodden.VeterinaryAPI.Repositories.AppointmentRepository;
 import com.bodden.VeterinaryAPI.Repositories.PetRepository;
+import com.bodden.VeterinaryAPI.Services.AppointmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collection;
 import java.util.List;
 
 @RestController
 public class AppointmentController {
 
     @Autowired
-    private AppointmentRepository appointmentRepository;
-
-    @Autowired
-    private PetRepository petRepository;
+    private AppointmentService appointmentService;
 
     @GetMapping("/appointments")
-    public List<Appointment> getAllAppointments(){
-        return appointmentRepository.findAll();
+    public Collection<Appointment> getAllAppointments() {
+
+        return appointmentService.getAppointments();
     }
 
     @GetMapping("/appointments/{appId}")
-    public Appointment getAppointment(@PathVariable long appId){
-        return appointmentRepository.findById(appId).orElseThrow(()-> new ResourceNotFoundException("appointmentId "+appId+ "not Found"));
+    public Appointment getAppointment(@PathVariable long appId) {
+        return appointmentService.getAppointment(appId);
     }
 
     @GetMapping("/pets/{petId}/appointments")
-    public List<Appointment> getAllAppointmentsByPetId(@PathVariable (value = "petId") Long petId) {
-        return appointmentRepository.findByPetId(petId).orElseThrow(()-> new ResourceNotFoundException("PetId " + petId + " not found"));
+    public Collection<Appointment> getAllAppointmentsByPetId(@PathVariable(value = "petId") Long petId) {
+        return appointmentService.appointmentByPet(petId);
     }
 
     @PostMapping("/pets/{petId}/appointments")
-    public Appointment createAppointment(@PathVariable (value = "petId") Long petId,
-                                 @RequestBody Appointment appointment) {
-        return petRepository.findById(petId).map(pet -> {
-            appointment.setPet(pet);
-            return appointmentRepository.save(appointment);
-        }).orElseThrow(() -> new ResourceNotFoundException("PetId " + petId + " not found"));
+    public Appointment createAppointment(@PathVariable(value = "petId") Long petId,
+                                         @RequestBody Appointment appointment) {
+        return appointmentService.createAppointment(petId, appointment);
     }
 
     @PutMapping("/pets/{petId}/appointments/{appointmentId}")
-    public Appointment updateAppointment(@PathVariable (value = "petId") Long petId,
-                                 @PathVariable (value = "appointmentId") Long appointmentId,
+    public Appointment updateAppointment(@PathVariable(value = "petId") Long petId,
+                                         @PathVariable(value = "appointmentId") Long appointmentId,
                                          @RequestBody Appointment appointmentRequest) {
-        return appointmentRepository.findByIdAndPetId(appointmentId,petId).map(appointment -> {
-            appointment.setLocalDate(appointmentRequest.getLocalDate());
-            appointment.setLocalTime(appointmentRequest.getLocalTime());
-            appointment.setService(appointmentRequest.getService());
-            appointment.setPet(appointment.getPet());
-            return appointmentRepository.save(appointment);
-        }).orElseThrow(() -> new ResourceNotFoundException("Appointment not found with id " + appointmentId + " and petId " + petId));
+        return appointmentService.updateAppointment(appointmentId, petId, appointmentRequest);
     }
 
     @DeleteMapping("/pets/{petId}/appointments/{appointmentId}")
-    public ResponseEntity<?> deleteAppointment(@PathVariable (value = "petId") Long petId,
-                                           @PathVariable (value = "appointmentId") Long appointmentId) {
-        return appointmentRepository.findByIdAndPetId(appointmentId, petId).map(appointment -> {
-            appointmentRepository.delete(appointment);
-            return ResponseEntity.ok().build();
-        }).orElseThrow(() -> new ResourceNotFoundException("Appointment not found with id " + appointmentId + " and petId " + petId));
+    public ResponseEntity<?> deleteAppointment(@PathVariable(value = "petId") Long petId,
+                                               @PathVariable(value = "appointmentId") Long appointmentId) {
+        appointmentService.deleteAppointment(appointmentId, petId);
+        return ResponseEntity.ok().build();
     }
 }
