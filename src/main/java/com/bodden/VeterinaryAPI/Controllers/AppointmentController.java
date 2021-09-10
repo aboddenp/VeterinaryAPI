@@ -48,7 +48,6 @@ public class AppointmentController {
                                  @PathVariable (value = "appointmentId") Long appointmentId,
                                          @RequestBody Appointment appointmentRequest) {
         return appointmentRepository.findByIdAndPetId(appointmentId,petId).map(appointment -> {
-            // check if petId is same as appointment
             appointment.setLocalDate(appointmentRequest.getLocalDate());
             appointment.setLocalTime(appointmentRequest.getLocalTime());
             appointment.setService(appointmentRequest.getService());
