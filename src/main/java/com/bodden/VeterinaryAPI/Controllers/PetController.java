@@ -26,17 +26,17 @@ public class PetController {
     }
 
     @GetMapping("/pets/{petId}")
-    public Pet getPet(@PathParam(value = "petId") long petId) {
+    public Pet getPet(@PathVariable(value = "petId") Long petId) {
         return petRepository.findById(petId).orElseThrow(() -> new ResourceNotFoundException("PetId " + petId + " not found"));
     }
 
-    @GetMapping("owners/{ownerId}/pets}")
-    public List<Pet> getAllPetsByOwnerId(@PathParam(value = "ownerId") long ownerId) {
+    @GetMapping("/owners/{ownerId}/pets")
+    public List<Pet> getAllPetsByOwnerId(@PathVariable(value = "ownerId") Long ownerId) {
         return petRepository.findByOwnerId(ownerId).orElseThrow(()-> new ResourceNotFoundException(("ownerId"+ ownerId + "not found")));
     }
 
-    @PostMapping("owners/{ownerId}/pets}")
-    public Pet createPet(@PathParam(value = "ownerId") long ownerId,@RequestBody Pet pet) {
+    @PostMapping("/owners/{ownerId}/pets")
+    public Pet createPet(@PathVariable(value = "ownerId") Long ownerId,@RequestBody Pet pet) {
         return ownerRepository.findById(ownerId).map(owner -> {
                     pet.setOwner(owner);
                     return petRepository.save(pet);
@@ -44,7 +44,7 @@ public class PetController {
         ).orElseThrow(()-> new ResourceNotFoundException("ownerId"+ ownerId + "not found"));
     }
 
-    @PutMapping("owners/{ownerId}/pets/{petId}")
+    @PutMapping("/owners/{ownerId}/pets/{petId}")
     public Pet updatePet(@PathVariable Long ownerId,@PathVariable Long petId,@RequestBody Pet petRequest) {
 
         return petRepository.findByIdAndOwnerId(petId,ownerId).map(pet -> {
@@ -55,7 +55,7 @@ public class PetController {
         }).orElseThrow(() -> new ResourceNotFoundException("Owner not found with id " + ownerId + " and petId " + petId));
     }
 
-    @DeleteMapping("owners/{ownerId}/pets/{petId}")
+    @DeleteMapping("/owners/{ownerId}/pets/{petId}")
     public ResponseEntity<?> deletePet(@PathVariable Long petId,@PathVariable Long ownerId) {
         return petRepository.findByIdAndOwnerId(petId,ownerId).map(pet -> {
             petRepository.delete(pet);

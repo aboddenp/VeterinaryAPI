@@ -24,6 +24,11 @@ public class AppointmentController {
         return appointmentRepository.findAll();
     }
 
+    @GetMapping("/appointments/{appId}")
+    public Appointment getAppointment(@PathVariable long appId){
+        return appointmentRepository.findById(appId).orElseThrow(()-> new ResourceNotFoundException("appointmentId "+appId+ "not Found"));
+    }
+
     @GetMapping("/pets/{petId}/appointments")
     public List<Appointment> getAllAppointmentsByPetId(@PathVariable (value = "petId") Long petId) {
         return appointmentRepository.findByPetId(petId).orElseThrow(()-> new ResourceNotFoundException("PetId " + petId + " not found"));
