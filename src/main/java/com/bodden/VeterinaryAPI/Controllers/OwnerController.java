@@ -35,7 +35,6 @@ public class OwnerController {
         }).orElseThrow(() -> new ResourceNotFoundException("ownerId " + ownerId + " not found"));
     }
 
-
     @DeleteMapping("/owners/{ownerId}")
     public ResponseEntity<?> deleteOwner(@PathVariable Long ownerId) {
         return ownerRepository.findById(ownerId).map(owner -> {

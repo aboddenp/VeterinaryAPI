@@ -10,6 +10,6 @@ import java.util.Optional;
 
 @Repository
 public interface PetRepository extends JpaRepository<Pet,Long> {
-    List<Appointment> findByOwnerId(Long ownerId);
-    Optional<Appointment> findByIdAndOwnerId(Long id, Long ownerId);
+    Optional<List<Pet>> findByOwnerId(Long ownerId);
+    Optional<Pet> findByIdAndOwnerId(Long id, Long ownerId);
 }
