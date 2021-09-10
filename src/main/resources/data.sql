@@ -19,4 +19,3 @@ INSERT INTO pets VALUES (10, 'Mulligan', 'dog', 5);
 INSERT INTO pets VALUES (11, 'Freddy', 'Monkey', 5);
 INSERT INTO pets VALUES (12, 'Lucky', 'parrot', 6);
 
-
