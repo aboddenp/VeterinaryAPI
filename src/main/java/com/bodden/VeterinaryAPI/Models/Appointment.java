@@ -27,11 +27,11 @@ public class Appointment {
     private Service service;
 
     @JsonFormat(pattern="yyyy-MM-dd")
-    @Column(nullable = false)
+    @Column(nullable = false, name ="date")
     private LocalDate localDate;
 
     @JsonFormat(pattern="HH:mm")
-    @Column(nullable = false)
+    @Column(nullable = false, name = "time")
     private LocalTime localTime;
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
