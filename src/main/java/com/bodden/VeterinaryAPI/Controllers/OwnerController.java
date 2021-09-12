@@ -18,17 +18,17 @@ public class OwnerController {
     private OwnerRepository ownerRepository;
 
     @GetMapping("/owners")
-    public Collection<Owner> getAllPets() {
+    public Collection<Owner> getAllOwners() {
         return ownerRepository.findAll();
     }
 
     @PostMapping("/owners")
-    public Owner createPet(@RequestBody Owner owner) {
+    public Owner createOwner(@RequestBody Owner owner) {
         return ownerRepository.save(owner);
     }
 
     @PutMapping("/owners/{ownerId}")
-    public Owner updatePet(@PathVariable Long ownerId,@RequestBody Owner ownerRequest) {
+    public Owner updateOwner(@PathVariable Long ownerId,@RequestBody Owner ownerRequest) {
         return ownerRepository.findById(ownerId).map(pet -> {
             pet.setName(ownerRequest.getName());
             pet.setLastName(ownerRequest.getLastName());
