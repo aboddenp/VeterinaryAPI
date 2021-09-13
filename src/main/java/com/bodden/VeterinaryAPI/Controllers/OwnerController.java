@@ -22,13 +22,18 @@ public class OwnerController {
         return ownerRepository.findAll();
     }
 
+    @GetMapping("/owners/{ownerId}")
+    public Owner getOwnerById(@PathVariable Long ownerId) {
+        return ownerRepository.findById(ownerId).orElseThrow(() -> new ResourceNotFoundException());
+    }
+
     @PostMapping("/owners")
     public Owner createOwner(@RequestBody Owner owner) {
         return ownerRepository.save(owner);
     }
 
     @PutMapping("/owners/{ownerId}")
-    public Owner updateOwner(@PathVariable Long ownerId,@RequestBody Owner ownerRequest) {
+    public Owner updateOwner(@PathVariable Long ownerId, @RequestBody Owner ownerRequest) {
         return ownerRepository.findById(ownerId).map(pet -> {
             pet.setName(ownerRequest.getName());
             pet.setLastName(ownerRequest.getLastName());

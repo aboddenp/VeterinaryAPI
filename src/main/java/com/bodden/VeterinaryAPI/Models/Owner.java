@@ -11,6 +11,7 @@ import java.util.Set;
 @Getter
 @Setter
 @ToString
+@AllArgsConstructor
 @RequiredArgsConstructor
 @Table(name = "owners")
 public class Owner {
