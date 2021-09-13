@@ -78,9 +78,11 @@ public class AppointmentServiceDefault implements AppointmentService {
 
 
     private void handleHistory(Appointment appointment, AppointmentHistory.LogType log){
-        String del = "|";
-        String[] appointmentData = {appointment.getId()+"",log.toString(),LocalDateTime.now().toString()};
-        appointmentProducer.sendAppointment(String.join(del,appointmentData));
+        AppointmentHistory appointmentHistory = new AppointmentHistory();
+        appointmentHistory.setAppointment(appointment);
+        appointmentHistory.setLog(log);
+        appointmentHistory.setDate(LocalDateTime.now());
+        appointmentProducer.sendAppointment(appointmentHistory);
     }
 
     private void checkValidDate(Appointment appointment){

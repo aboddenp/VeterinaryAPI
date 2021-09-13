@@ -14,9 +14,9 @@ public class AppointmentProducer {
         this.rabbitTemplate = rabbitTemplate;
     }
 
-    public void sendAppointment(String appointmentData){
+    public void sendAppointment(AppointmentHistory appointmentData){
         try{
-            rabbitTemplate.convertAndSend(VeterinaryApiApplication.topicExchangeName,"vet.app.#",appointmentData);
+             rabbitTemplate.convertAndSend(VeterinaryApiApplication.topicExchangeName,"vet.app.#",appointmentData);
         }catch (Exception e){
             return;
         }

@@ -6,6 +6,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Objects;
 import java.util.Set;
 
@@ -15,7 +16,7 @@ import java.util.Set;
 @ToString
 @RequiredArgsConstructor
 @Table(name = "pets")
-public class Pet {
+public class Pet implements Serializable {
     // Fields
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
