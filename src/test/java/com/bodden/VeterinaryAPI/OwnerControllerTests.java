@@ -80,13 +80,13 @@ public class OwnerControllerTests {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", notNullValue()))
-                .andExpect(jsonPath("$.id",is((int ) owner1.getId())))
-                .andExpect(jsonPath("$.name",is("John")));
+                .andExpect(jsonPath("$.id", is((int) owner1.getId())))
+                .andExpect(jsonPath("$.name", is("John")));
     }
 
     @Test
     public void createOwner_succeed() throws Exception {
-        Owner owner = new Owner(4,"new","owner");
+        Owner owner = new Owner(4, "new", "owner");
         Mockito.when(ownerRepository.save(owner)).thenReturn(owner);
 
         MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders.post("/owners")
@@ -97,12 +97,12 @@ public class OwnerControllerTests {
         mockMvc.perform(mockRequest)
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", notNullValue()))
-                .andExpect(jsonPath("$.name",is(owner.getName())));
+                .andExpect(jsonPath("$.name", is(owner.getName())));
     }
 
     @Test
-    public void updateOwner_succeed() throws Exception{
-        Owner ownerUpdate = new Owner(3,"update","owner");
+    public void updateOwner_succeed() throws Exception {
+        Owner ownerUpdate = new Owner(3, "update", "owner");
         Mockito.when(ownerRepository.findById(owner3.getId())).thenReturn(Optional.of(owner3));
         Mockito.when(ownerRepository.save(ownerUpdate)).thenReturn(ownerUpdate);
 
@@ -112,14 +112,14 @@ public class OwnerControllerTests {
                 .content(mapper.writeValueAsString(ownerUpdate));
         mockMvc.perform(mockRequest)
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$",notNullValue()))
-                .andExpect(jsonPath("$.name",is(ownerUpdate.getName())))
-                .andExpect(jsonPath("$.lastName",is(ownerUpdate.getLastName())));
+                .andExpect(jsonPath("$", notNullValue()))
+                .andExpect(jsonPath("$.name", is(ownerUpdate.getName())))
+                .andExpect(jsonPath("$.lastName", is(ownerUpdate.getLastName())));
     }
 
     @Test
-    public void updateOwner_noId() throws Exception{
-        Owner ownerUpdate = new Owner(3,"update","owner");
+    public void updateOwner_noId() throws Exception {
+        Owner ownerUpdate = new Owner(3, "update", "owner");
         Mockito.when(ownerRepository.findById(owner3.getId())).thenReturn(Optional.of(owner3));
         Mockito.when(ownerRepository.save(ownerUpdate)).thenReturn(ownerUpdate);
 
@@ -133,8 +133,8 @@ public class OwnerControllerTests {
     }
 
     @Test
-    public void updateOwner_notFound() throws Exception{
-        Owner ownerUpdate = new Owner(100l,"update","owner");
+    public void updateOwner_notFound() throws Exception {
+        Owner ownerUpdate = new Owner(100l, "update", "owner");
         Mockito.when(ownerRepository.findById(ownerUpdate.getId())).thenReturn(Optional.empty());
         Mockito.when(ownerRepository.save(ownerUpdate)).thenReturn(ownerUpdate);
 
@@ -146,7 +146,7 @@ public class OwnerControllerTests {
         mockMvc.perform(mockRequest)
                 .andExpect(status().isNotFound())
                 .andExpect(result ->
-                    assertTrue(result.getResolvedException() instanceof ResourceNotFoundException))
+                        assertTrue(result.getResolvedException() instanceof ResourceNotFoundException))
                 .andExpect(result ->
                         assertEquals("ownerId " + ownerUpdate.getId() + " not found", result
                                 .getResolvedException().getMessage()));
@@ -175,7 +175,6 @@ public class OwnerControllerTests {
                 .andExpect(result ->
                         assertEquals("ownerId " + 5 + " not found", result.getResolvedException().getMessage()));
     }
-
 
 
 }
