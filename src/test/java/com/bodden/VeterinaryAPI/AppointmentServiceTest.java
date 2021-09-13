@@ -5,6 +5,7 @@ import com.bodden.VeterinaryAPI.Exceptions.ResourceNotFoundException;
 import com.bodden.VeterinaryAPI.Models.Appointment;
 import com.bodden.VeterinaryAPI.Models.Owner;
 import com.bodden.VeterinaryAPI.Models.Pet;
+import com.bodden.VeterinaryAPI.Queues.Producers.AppointmentProducer;
 import com.bodden.VeterinaryAPI.Repositories.AppointmentRepository;
 import com.bodden.VeterinaryAPI.Repositories.PetRepository;
 import com.bodden.VeterinaryAPI.Services.AppointmentService;
@@ -16,10 +17,12 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
@@ -41,6 +44,8 @@ public class AppointmentServiceTest {
     private AppointmentRepository appointmentRepository;
     @MockBean
     private PetRepository petRepository;
+    @MockBean
+    private AppointmentProducer appointmentProducer;
 
     @InjectMocks
     private AppointmentServiceDefault appointmentService;
@@ -52,6 +57,7 @@ public class AppointmentServiceTest {
     Appointment app3;
     Owner owner1;
     Owner owner2;
+
 
     @BeforeEach
     private void setUp() {
@@ -89,20 +95,27 @@ public class AppointmentServiceTest {
         app3.setId(2);
         app3.setLocalTime(java.time.LocalTime.of(11, 4));
         app3.setLocalDate(java.time.LocalDate.of(2021, 11, 14));
-
     }
 
     @Test
-    public void noAppointmentsInThePast() throws Exception{
-        app3.setLocalDate(java.time.LocalDate.of(2021, 11, 14));
+    public void noAppointmentsInThePast() throws Exception {
+        app3.setLocalDate(java.time.LocalDate.of(1996, 11, 14));
         Mockito.when(petRepository.findById(pet1.getId())).thenReturn(Optional.of(pet1));
         Mockito.when(appointmentRepository.save(app1)).thenReturn(app1);
-        Assertions.assertThrows(InvalidDataException.class,()->{
-            appointmentService.createAppointment(pet1.getId(),app1);
+        Assertions.assertThrows(InvalidDataException.class, () -> {
+            appointmentService.createAppointment(pet1.getId(), app1);
         });
     }
 
-
+    @Test
+    public void noAppointmentUpdateInThePast() throws Exception {
+        app3.setLocalDate(java.time.LocalDate.of(1996, 11, 14));
+        Mockito.when(appointmentRepository.findByIdAndPetId(app3.getId(), pet2.getId())).thenReturn(Optional.of(app3));
+        Mockito.when(appointmentRepository.save(app3)).thenReturn(app3);
+        Assertions.assertThrows(InvalidDataException.class, () -> {
+            appointmentService.updateAppointment(app3.getId(), pet2.getId(), app3);
+        });
+    }
 
 
 }

@@ -9,6 +9,7 @@ import com.bodden.VeterinaryAPI.Services.AppointmentService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -154,5 +155,35 @@ public class AppointmentControllerTests {
                 .andExpect(jsonPath("$", notNullValue()))
                 .andExpect(jsonPath("$.id",is((int) app2.getId())))
                 .andExpect(jsonPath("$.pet.name",is("Whiskers")));
+    }
+
+    @Test
+    public void updateAppointment_succeed() throws Exception{
+       Appointment app = new Appointment();
+        app.setService(Appointment.Service.GROOMING);
+        app.setPet(pet2);
+        app.setId(1);
+        app.setLocalTime(java.time.LocalTime.of(11, 4));
+        app.setLocalDate(java.time.LocalDate.of(2021, 11, 14));
+
+        Mockito.when(appointmentService.updateAppointment(app2.getId(), pet2.getId(),app)).thenReturn(app);
+
+        MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders.put("/pets/"+pet2.getId()+"/appointments/"+app.getId())
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString(app));
+        mockMvc.perform(mockRequest)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$",notNullValue()))
+                .andExpect(jsonPath("$.service",is(app.getService().toString())));
+    }
+
+    @Test
+    public void deleteAppointmetById_succeed() throws Exception {
+        Mockito.when(appointmentService.deleteAppointment(app1.getId(), pet1.getId())).thenReturn(true);
+        mockMvc.perform(MockMvcRequestBuilders
+                        .delete("/pets/"+pet1.getId()+"/appointments/"+app1.getId())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
     }
 }
