@@ -1,5 +1,6 @@
 package com.bodden.VeterinaryAPI.Services;
 
+import com.bodden.VeterinaryAPI.Exceptions.InvalidDataException;
 import com.bodden.VeterinaryAPI.Exceptions.ResourceNotFoundException;
 import com.bodden.VeterinaryAPI.Models.Appointment;
 import com.bodden.VeterinaryAPI.Repositories.AppointmentRepository;
@@ -8,6 +9,9 @@ import com.sun.istack.NotNull;
 import org.hibernate.annotations.NotFound;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.chrono.ChronoLocalDate;
 import java.util.Collection;
 
 public class AppointmentServiceDefault implements AppointmentService {
@@ -19,6 +23,9 @@ public class AppointmentServiceDefault implements AppointmentService {
 
     @Override
     public Appointment createAppointment(Long petId, Appointment appointment) {
+
+        checkValidDate(appointment);
+
         return petRepository.findById(petId).map(pet -> {
             appointment.setPet(pet);
             return appointmentRepository.save(appointment);
@@ -57,6 +64,17 @@ public class AppointmentServiceDefault implements AppointmentService {
     @Override
     public Collection<Appointment> appointmentByPet(Long id) {
         return appointmentRepository.findByPetId(id).orElseThrow(()-> notFound(id));
+    }
+
+    private void checkValidDate(Appointment appointment){
+        java.time.LocalDate appDate =  appointment.getLocalDate();
+        java.time.LocalTime appTime =  appointment.getLocalTime();
+        java.time.LocalDateTime dt = LocalDateTime.of(appDate,appTime);
+        java.time.LocalDateTime today = LocalDateTime.now();
+
+        if(dt.isBefore(today)){
+            throw new InvalidDataException("Cannot create appointments in the past");
+        }
     }
 
     private ResourceNotFoundException notFound(Long petId){
