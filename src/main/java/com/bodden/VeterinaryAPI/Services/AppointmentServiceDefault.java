@@ -8,6 +8,7 @@ import com.bodden.VeterinaryAPI.Queues.Producers.AppointmentProducer;
 import com.bodden.VeterinaryAPI.Repositories.AppointmentRepository;
 import com.bodden.VeterinaryAPI.Repositories.PetRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.client.HttpClientErrorException;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -39,6 +40,10 @@ public class AppointmentServiceDefault implements AppointmentService {
     public Appointment updateAppointment(Long id, Long petId, Appointment appointmentRequest) {
         checkValidDate(appointmentRequest);
         return appointmentRepository.findByIdAndPetId(id,petId).map(appointment -> {
+            // check that the pet update exists in db
+            if(!petRepository.existsById(appointment.getId())){
+                throw notFound(appointment.getPet().getId());
+            }
             appointment.setLocalDate(appointmentRequest.getLocalDate());
             appointment.setLocalTime(appointmentRequest.getLocalTime());
             appointment.setService(appointmentRequest.getService());
@@ -52,7 +57,6 @@ public class AppointmentServiceDefault implements AppointmentService {
     public boolean deleteAppointment(Long id, Long petId) {
         return appointmentRepository.findByIdAndPetId(id, petId).map(appointment -> {
             appointmentRepository.delete(appointment);
-            handleHistory(appointment, AppointmentHistory.LogType.DELETED);
             return true;
         }).orElseThrow(() -> notFound(id,petId));
     }

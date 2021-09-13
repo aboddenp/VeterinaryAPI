@@ -117,5 +117,26 @@ public class AppointmentServiceTest {
         });
     }
 
+    @Test
+    public  void updatePetDoesNotExist_fails() throws  Exception{
+        Pet pet = new Pet();
+        pet.setOwner(owner2);
+        pet.setName("Whiskers");
+        pet.setType("Cat");
+        pet.setId(53L);
+
+        Appointment request = new Appointment();
+        request.setService(Appointment.Service.GROOMING);
+        request.setPet(pet);
+        request.setLocalTime(java.time.LocalTime.of(11, 4));
+        request.setLocalDate(java.time.LocalDate.of(2021, 11, 14));
+
+        Mockito.when(appointmentRepository.findByIdAndPetId(app3.getId(), pet2.getId())).thenReturn(Optional.of(app3));
+        Mockito.when(appointmentRepository.save(app3)).thenReturn(app3);
+        Assertions.assertThrows(ResourceNotFoundException.class, () -> {
+            appointmentService.updateAppointment(app3.getId(), pet2.getId(), request);
+        });
+    }
+
 
 }
