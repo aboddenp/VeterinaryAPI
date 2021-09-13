@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -19,7 +21,8 @@ public class AppointmentHistory {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @ManyToOne()
+    @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Appointment appointment;
 
     @Column(nullable = false)
@@ -30,7 +33,7 @@ public class AppointmentHistory {
     private LocalDateTime date;
 
     public enum LogType{
-        CREATED(),UPDATED(),DELETED();
+        CREATED(),UPDATED()
     }
 
 }
