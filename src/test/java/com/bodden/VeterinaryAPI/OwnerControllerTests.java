@@ -72,7 +72,7 @@ public class OwnerControllerTests {
     }
 
     @Test
-    public void getOwnerbyId_secceed() throws Exception {
+    public void getOwnerById_succeed() throws Exception {
         Mockito.when(ownerRepository.findById(owner1.getId())).thenReturn(Optional.of(owner1));
 
         mockMvc.perform(MockMvcRequestBuilders
