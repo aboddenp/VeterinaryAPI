@@ -1,9 +1,8 @@
 package com.bodden.VeterinaryAPI.Models;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -21,6 +20,7 @@ public class Payment implements Serializable {
     private long id;
 
     @OneToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "appointment_id", nullable = false)
     private Appointment appointment;
 

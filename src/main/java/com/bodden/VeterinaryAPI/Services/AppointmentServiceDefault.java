@@ -8,7 +8,7 @@ import com.bodden.VeterinaryAPI.Queues.Producers.AppointmentProducer;
 import com.bodden.VeterinaryAPI.Repositories.AppointmentRepository;
 import com.bodden.VeterinaryAPI.Repositories.PetRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.client.HttpClientErrorException;
+
 
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -26,12 +26,13 @@ public class AppointmentServiceDefault implements AppointmentService {
     }
 
     @Override
-    public Appointment createAppointment(Long petId, Appointment appointment){
+    public Appointment createAppointment(Long petId, Appointment appointment) {
         checkValidDate(appointment);
         return petRepository.findById(petId).map(pet -> {
+            // create appointment
             appointment.setPet(pet);
             Appointment saved = appointmentRepository.save(appointment);
-            handleHistory(saved,AppointmentHistory.LogType.CREATED);
+            handleHistory(saved, AppointmentHistory.LogType.CREATED);
             return saved;
         }).orElseThrow(() -> notFound(petId));
     }
@@ -39,18 +40,18 @@ public class AppointmentServiceDefault implements AppointmentService {
     @Override
     public Appointment updateAppointment(Long id, Long petId, Appointment appointmentRequest) {
         checkValidDate(appointmentRequest);
-        return appointmentRepository.findByIdAndPetId(id,petId).map(appointment -> {
+        return appointmentRepository.findByIdAndPetId(id, petId).map(appointment -> {
             // check that the pet update exists in db
-            if(!petRepository.existsById(appointment.getId())){
+            if (!petRepository.existsById(appointment.getId())) {
                 throw notFound(appointment.getPet().getId());
             }
             appointment.setLocalDate(appointmentRequest.getLocalDate());
             appointment.setLocalTime(appointmentRequest.getLocalTime());
             appointment.setService(appointmentRequest.getService());
             appointment.setPet(appointment.getPet());
-            handleHistory(appointment,AppointmentHistory.LogType.UPDATED);
+            handleHistory(appointment, AppointmentHistory.LogType.UPDATED);
             return appointmentRepository.save(appointment);
-        }).orElseThrow(() -> notFound(id,petId));
+        }).orElseThrow(() -> notFound(id, petId));
     }
 
     @Override
@@ -58,7 +59,7 @@ public class AppointmentServiceDefault implements AppointmentService {
         return appointmentRepository.findByIdAndPetId(id, petId).map(appointment -> {
             appointmentRepository.delete(appointment);
             return true;
-        }).orElseThrow(() -> notFound(id,petId));
+        }).orElseThrow(() -> notFound(id, petId));
     }
 
     @Override
@@ -68,16 +69,16 @@ public class AppointmentServiceDefault implements AppointmentService {
 
     @Override
     public Appointment getAppointment(Long id) {
-        return appointmentRepository.findById(id).orElseThrow(()-> notFound(id));
+        return appointmentRepository.findById(id).orElseThrow(() -> notFound(id));
     }
 
     @Override
     public Collection<Appointment> appointmentByPet(Long id) {
-        return appointmentRepository.findByPetId(id).orElseThrow(()-> notFound(id));
+        return appointmentRepository.findByPetId(id).orElseThrow(() -> notFound(id));
     }
 
 
-    private void handleHistory(Appointment appointment, AppointmentHistory.LogType log){
+    private void handleHistory(Appointment appointment, AppointmentHistory.LogType log) {
         AppointmentHistory appointmentHistory = new AppointmentHistory();
         appointmentHistory.setAppointment(appointment);
         appointmentHistory.setLog(log);
@@ -85,22 +86,22 @@ public class AppointmentServiceDefault implements AppointmentService {
         appointmentProducer.sendAppointment(appointmentHistory);
     }
 
-    private void checkValidDate(Appointment appointment){
-        java.time.LocalDate appDate =  appointment.getLocalDate();
-        java.time.LocalTime appTime =  appointment.getLocalTime();
-        java.time.LocalDateTime dt = LocalDateTime.of(appDate,appTime);
+    private void checkValidDate(Appointment appointment) {
+        java.time.LocalDate appDate = appointment.getLocalDate();
+        java.time.LocalTime appTime = appointment.getLocalTime();
+        java.time.LocalDateTime dt = LocalDateTime.of(appDate, appTime);
         java.time.LocalDateTime today = LocalDateTime.now();
 
-        if(dt.isBefore(today)){
+        if (dt.isBefore(today)) {
             throw new InvalidDataException("Cannot create appointments in the past");
         }
     }
 
-    private ResourceNotFoundException notFound(Long petId){
+    private ResourceNotFoundException notFound(Long petId) {
         return new ResourceNotFoundException("PetId " + petId + " not found");
     }
 
-    private ResourceNotFoundException notFound(Long id, Long petId){
+    private ResourceNotFoundException notFound(Long id, Long petId) {
         return new ResourceNotFoundException("Appointment not found with id " + id + " and petId " + petId);
     }
 

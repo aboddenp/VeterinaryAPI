@@ -34,7 +34,7 @@ public class VeterinaryApiApplication {
         return new AppointmentServiceDefault();
     }
 
-    // Appointment Queue Setup
+    // Queue Setup
     @Bean
     Queue queue() {
         return new Queue(queueName, false);
