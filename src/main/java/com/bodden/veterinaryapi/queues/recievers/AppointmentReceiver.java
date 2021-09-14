@@ -1,4 +1,4 @@
-package com.bodden.veterinaryapi.queues.Recievers;
+package com.bodden.veterinaryapi.queues.recievers;
 
 import com.bodden.veterinaryapi.models.AppointmentHistory;
 import com.bodden.veterinaryapi.repositories.AppointmentHistoryRepository;

@@ -5,7 +5,7 @@ import com.bodden.veterinaryapi.exceptions.ResourceNotFoundException;
 import com.bodden.veterinaryapi.models.Appointment;
 import com.bodden.veterinaryapi.models.Owner;
 import com.bodden.veterinaryapi.models.Pet;
-import com.bodden.veterinaryapi.queues.Producers.AppointmentProducer;
+import com.bodden.veterinaryapi.queues.producers.AppointmentProducer;
 import com.bodden.veterinaryapi.repositories.AppointmentRepository;
 import com.bodden.veterinaryapi.repositories.PetRepository;
 import com.bodden.veterinaryapi.services.AppointmentServiceDefault;

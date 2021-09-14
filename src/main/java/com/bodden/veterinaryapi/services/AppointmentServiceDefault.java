@@ -4,7 +4,7 @@ import com.bodden.veterinaryapi.exceptions.InvalidDataException;
 import com.bodden.veterinaryapi.exceptions.ResourceNotFoundException;
 import com.bodden.veterinaryapi.models.Appointment;
 import com.bodden.veterinaryapi.models.AppointmentHistory;
-import com.bodden.veterinaryapi.queues.Producers.AppointmentProducer;
+import com.bodden.veterinaryapi.queues.producers.AppointmentProducer;
 import com.bodden.veterinaryapi.repositories.AppointmentRepository;
 import com.bodden.veterinaryapi.repositories.PetRepository;
 import org.springframework.beans.factory.annotation.Autowired;

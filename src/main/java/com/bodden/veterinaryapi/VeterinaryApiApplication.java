@@ -1,6 +1,6 @@
 package com.bodden.veterinaryapi;
 
-import com.bodden.veterinaryapi.queues.Recievers.AppointmentReceiver;
+import com.bodden.veterinaryapi.queues.recievers.AppointmentReceiver;
 import com.bodden.veterinaryapi.services.AppointmentService;
 import com.bodden.veterinaryapi.services.AppointmentServiceDefault;
 
