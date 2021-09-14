@@ -46,5 +46,4 @@ public class OwnerController {
             return ResponseEntity.ok().build();
         }).orElseThrow(() -> new ResourceNotFoundException("ownerId " + ownerId + " not found"));
     }
-
 }

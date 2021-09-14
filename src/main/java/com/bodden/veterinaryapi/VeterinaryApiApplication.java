@@ -25,7 +25,7 @@ public class VeterinaryApiApplication {
     public static final String topicExchangeName = "spring-boot-exchange";
     public static final String queueName = "appointment-log";
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
         SpringApplication.run(VeterinaryApiApplication.class, args);
     }
 

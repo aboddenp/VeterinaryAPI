@@ -104,5 +104,4 @@ public class AppointmentServiceDefault implements AppointmentService {
     private ResourceNotFoundException notFound(Long id, Long petId) {
         return new ResourceNotFoundException("Appointment not found with id " + id + " and petId " + petId);
     }
-
 }

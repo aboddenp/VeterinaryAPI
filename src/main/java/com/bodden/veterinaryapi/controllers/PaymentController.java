@@ -18,23 +18,18 @@ public class PaymentController {
     PaymentRepository paymentRepository;
 
     @GetMapping("payments")
-    public Collection<Payment> getPayments(){
+    public Collection<Payment> getPayments() {
         return paymentRepository.findAll();
     }
 
     @GetMapping("/appointment/{appId}/payment")
-    public Payment getPayment(@PathVariable Long appId){
+    public Payment getPayment(@PathVariable Long appId) {
         return paymentRepository.findByAppointmentId(appId)
-                .orElseThrow(()->new ResourceNotFoundException("Appointment with id: "+appId+" not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Appointment with id: " + appId + " not found"));
     }
 
     @PutMapping("/appointment/{appId}/payment/pay")
-    public Payment ProcessPayment(@PathVariable Long appId){
+    public Payment ProcessPayment(@PathVariable Long appId) {
         return null;
     }
-
-
-
-
-
 }

@@ -27,11 +27,11 @@ public class Appointment implements Serializable {
     @Enumerated(EnumType.STRING)
     private Service service;
 
-    @JsonFormat(pattern="yyyy-MM-dd")
-    @Column(nullable = false, name ="date")
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    @Column(nullable = false, name = "date")
     private LocalDate localDate;
 
-    @JsonFormat(pattern="HH:mm")
+    @JsonFormat(pattern = "HH:mm")
     @Column(nullable = false, name = "time")
     private LocalTime localTime;
 
@@ -41,8 +41,8 @@ public class Appointment implements Serializable {
     @ToString.Exclude
     private Pet pet;
 
-    public enum Service{
-        GROOMING(),MEDICAL()
+    public enum Service {
+        GROOMING(), MEDICAL()
     }
 
     @Override

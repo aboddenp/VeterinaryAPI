@@ -8,10 +8,12 @@ import java.util.Collection;
 import java.util.Optional;
 
 @Repository
-public interface AppointmentRepository extends JpaRepository<Appointment,Long> {
+public interface AppointmentRepository extends JpaRepository<Appointment, Long> {
 
     Optional<Appointment> findById(Long id);
+
     Optional<Collection<Appointment>> findByPetId(Long petId);
+
     Optional<Appointment> findByIdAndPetId(Long id, Long petId);
 }
 

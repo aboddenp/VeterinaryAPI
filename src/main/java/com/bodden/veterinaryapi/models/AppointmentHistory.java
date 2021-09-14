@@ -33,8 +33,7 @@ public class AppointmentHistory implements Serializable {
     @Column(nullable = false)
     private LocalDateTime date;
 
-    public enum LogType{
-        CREATED(),UPDATED()
+    public enum LogType {
+        CREATED(), UPDATED()
     }
-
 }

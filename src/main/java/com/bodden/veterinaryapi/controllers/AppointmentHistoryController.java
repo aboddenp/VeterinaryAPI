@@ -16,8 +16,7 @@ public class AppointmentHistoryController {
     private AppointmentHistoryRepository appointmentHistoryRepository;
 
     @GetMapping("appointments/{appId}/history")
-    public Collection<AppointmentHistory> getHistory(@PathVariable(value = "appId") Long appId ) {
+    public Collection<AppointmentHistory> getHistory(@PathVariable(value = "appId") Long appId) {
         return appointmentHistoryRepository.findByAppointmentId(appId);
     }
-
 }

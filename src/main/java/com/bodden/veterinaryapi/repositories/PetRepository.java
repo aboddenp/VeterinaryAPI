@@ -8,7 +8,8 @@ import java.util.Collection;
 import java.util.Optional;
 
 @Repository
-public interface PetRepository extends JpaRepository<Pet,Long> {
+public interface PetRepository extends JpaRepository<Pet, Long> {
     Optional<Collection<Pet>> findByOwnerId(Long ownerId);
+
     Optional<Pet> findByIdAndOwnerId(Long id, Long ownerId);
 }

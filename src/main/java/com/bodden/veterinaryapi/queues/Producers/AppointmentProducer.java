@@ -10,16 +10,15 @@ public class AppointmentProducer {
 
     private final RabbitTemplate rabbitTemplate;
 
-    public AppointmentProducer(RabbitTemplate rabbitTemplate){
+    public AppointmentProducer(RabbitTemplate rabbitTemplate) {
         this.rabbitTemplate = rabbitTemplate;
     }
 
-    public void sendAppointment(AppointmentHistory appointmentData){
-        try{
-             rabbitTemplate.convertAndSend(VeterinaryApiApplication.topicExchangeName,"vet.app.#",appointmentData);
-        }catch (Exception e){
+    public void sendAppointment(AppointmentHistory appointmentData) {
+        try {
+            rabbitTemplate.convertAndSend(VeterinaryApiApplication.topicExchangeName, "vet.app.#", appointmentData);
+        } catch (Exception e) {
             return;
         }
     }
-
 }
