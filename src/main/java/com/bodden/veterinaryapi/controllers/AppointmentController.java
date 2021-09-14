@@ -1,7 +1,7 @@
 package com.bodden.veterinaryapi.controllers;
 
 import com.bodden.veterinaryapi.models.Appointment;
-import com.bodden.veterinaryapi.services.AppointmentService;
+import com.bodden.veterinaryapi.services.interfaces.AppointmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

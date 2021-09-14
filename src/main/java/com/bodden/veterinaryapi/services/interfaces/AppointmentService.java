@@ -1,4 +1,4 @@
-package com.bodden.veterinaryapi.services;
+package com.bodden.veterinaryapi.services.interfaces;
 
 import com.bodden.veterinaryapi.models.Appointment;
 

@@ -1,8 +1,8 @@
 package com.bodden.veterinaryapi;
 
 import com.bodden.veterinaryapi.queues.recievers.AppointmentReceiver;
-import com.bodden.veterinaryapi.services.AppointmentService;
-import com.bodden.veterinaryapi.services.AppointmentServiceDefault;
+import com.bodden.veterinaryapi.services.interfaces.AppointmentService;
+import com.bodden.veterinaryapi.services.implementations.AppointmentServiceDefault;
 
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;

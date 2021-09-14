@@ -3,7 +3,7 @@ package com.bodden.veterinaryapi;
 import com.bodden.veterinaryapi.models.Appointment;
 import com.bodden.veterinaryapi.models.Owner;
 import com.bodden.veterinaryapi.models.Pet;
-import com.bodden.veterinaryapi.services.AppointmentService;
+import com.bodden.veterinaryapi.services.interfaces.AppointmentService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

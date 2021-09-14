@@ -8,7 +8,7 @@ import com.bodden.veterinaryapi.models.Pet;
 import com.bodden.veterinaryapi.queues.producers.AppointmentProducer;
 import com.bodden.veterinaryapi.repositories.AppointmentRepository;
 import com.bodden.veterinaryapi.repositories.PetRepository;
-import com.bodden.veterinaryapi.services.AppointmentServiceDefault;
+import com.bodden.veterinaryapi.services.implementations.AppointmentServiceDefault;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
