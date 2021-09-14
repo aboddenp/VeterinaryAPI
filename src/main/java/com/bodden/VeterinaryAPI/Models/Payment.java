@@ -21,6 +21,7 @@ public class Payment implements Serializable {
     private long id;
 
     @OneToOne
+    @JoinColumn(name = "appointment_id", nullable = false)
     private Appointment appointment;
 
     @Column(nullable = false)
